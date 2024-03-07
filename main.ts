@@ -30,6 +30,13 @@ namespace ColorSensor {
             tmp = i2cread(ADDR, 0x93) & 0x1;
         }
     }
+    //% block="get distance (0~255)"
+    //% block.loc.cs="vzdálenost (0~255)"
+    //% weight=100
+    export function distance(): number {
+        calibration()
+        return i2cread(ADDR, 0x9C)
+    }
 }
 
 // block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf005"
