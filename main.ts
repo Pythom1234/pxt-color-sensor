@@ -81,7 +81,15 @@ namespace ColorSensor {
         //% block="White"
         white
     }
-    //% block="Color sensor IIC port color HUE(0~360)"
+    export enum RGB {
+        //% block="R"
+        R,
+        //% block="G"
+        G,
+        //% block="B"
+        B
+    }
+    //% block="Color sensor HUE(0~360)"
     export function readColor(): number {
         if (color_first_init == false) {
             initModule()
@@ -103,7 +111,7 @@ namespace ColorSensor {
         let hue = rgb2hsl(r, g, b)
         return hue
     }
-    //% block="Color sensor IIC port detects %color"
+    //% block="Color sensor detects %color"
     export function checkColor(color: ColorList): boolean {
         let hue = readColor()
         switch (color) {
@@ -163,6 +171,34 @@ namespace ColorSensor {
                     return false
                 }
                 break
+        }
+    }
+    //% block="Color sensor %rgb"
+    export function readColorRGB(rgb: RGB): number {
+        if (color_first_init == false) {
+            initModule()
+            colorMode()
+        }
+        let tmp = i2cread_color(APDS9960_ADDR, APDS9960_STATUS) & 0x1;
+        while (!tmp) {
+            basic.pause(5);
+            tmp = i2cread_color(APDS9960_ADDR, APDS9960_STATUS) & 0x1;
+        }
+        let c = i2cread_color(APDS9960_ADDR, APDS9960_CDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_CDATAH) * 256;
+        let r = i2cread_color(APDS9960_ADDR, APDS9960_RDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_RDATAH) * 256;
+        let g = i2cread_color(APDS9960_ADDR, APDS9960_GDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_GDATAH) * 256;
+        let b = i2cread_color(APDS9960_ADDR, APDS9960_BDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_BDATAH) * 256;
+        let avg = c / 3;
+        r = r * 255 / avg;
+        g = g * 255 / avg;
+        b = b * 255 / avg;
+        switch (rgb) {
+            case RGB.R:
+                return r
+            case RGB.G:
+                return g
+            case RGB.B:
+                return b
         }
     }
 }
