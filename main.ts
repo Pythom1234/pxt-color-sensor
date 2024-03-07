@@ -1,4 +1,4 @@
-//% block="Color Sensor" block.loc.cs="Senzor Barev"
+//% block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf005"
 namespace ColorSensor {
     const APDS9960_ADDR = 0x39
     const APDS9960_ENABLE = 0x80
@@ -16,8 +16,6 @@ namespace ColorSensor {
     const APDS9960_GCONF4 = 0xAB
     const APDS9960_AICLEAR = 0xE7
     let color_first_init = false
-
-
     function i2cwrite_color(addr: number, reg: number, value: number) {
         let buf = pins.createBuffer(2)
         buf[0] = reg
@@ -37,7 +35,6 @@ namespace ColorSensor {
         let maxVal = Math.max(R, Math.max(G, B))
         let minVal = Math.min(R, Math.min(G, B))
         let Delta = maxVal - minVal;
-
         if (Delta < 0) {
             Hue = 0;
         }
@@ -68,7 +65,6 @@ namespace ColorSensor {
         let tmp = i2cread_color(APDS9960_ADDR, APDS9960_ENABLE) | 0x2;
         i2cwrite_color(APDS9960_ADDR, APDS9960_ENABLE, tmp);
     }
-
     export enum ColorList {
         //% block="Red"
         red,
@@ -85,7 +81,6 @@ namespace ColorSensor {
         //% block="White"
         white
     }
-
     //% block="Color sensor IIC port color HUE(0~360)"
     export function readColor(): number {
         if (color_first_init == false) {
@@ -101,12 +96,10 @@ namespace ColorSensor {
         let r = i2cread_color(APDS9960_ADDR, APDS9960_RDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_RDATAH) * 256;
         let g = i2cread_color(APDS9960_ADDR, APDS9960_GDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_GDATAH) * 256;
         let b = i2cread_color(APDS9960_ADDR, APDS9960_BDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_BDATAH) * 256;
-        // map to rgb based on clear channel
         let avg = c / 3;
         r = r * 255 / avg;
         g = g * 255 / avg;
         b = b * 255 / avg;
-        //let hue = rgb2hue(r, g, b);
         let hue = rgb2hsl(r, g, b)
         return hue
     }
