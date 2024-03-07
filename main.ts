@@ -1,4 +1,4 @@
-//% block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf005"
+//% block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf53f"
 namespace ColorSensor {
     const APDS9960_ADDR = 0x39
     const APDS9960_ENABLE = 0x80
