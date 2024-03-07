@@ -14,12 +14,12 @@ namespace ColorSensor {
         return val;
     }
     export function initModule(): void {
-        i2cwrite(ADDR, 0x81, 0xFC)
-        i2cwrite(ADDR, 0x8F, 0x03)
-        i2cwrite(ADDR, 0x80, 0x00)
-        i2cwrite(ADDR, 0xAB, 0x00)
-        i2cwrite(ADDR, 0xE7, 0x00)
-        i2cwrite(ADDR, 0x80, 0x01)
+        i2cwrite(ADDR, 0x81, 0b11111100)
+        i2cwrite(ADDR, 0x8F, 0b1111)
+        i2cwrite(ADDR, 0x80, 0b0)
+        i2cwrite(ADDR, 0xAB, 0b0)
+        i2cwrite(ADDR, 0xE7, 0b0)
+        i2cwrite(ADDR, 0x80, 0b1000111)
         first_init = true
     }
 }
