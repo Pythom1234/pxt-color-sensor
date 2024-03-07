@@ -2,18 +2,18 @@
 namespace ColorSensor {
     const ADDR = 0x39;
     let first_init = false
-    function i2cwrite(addr: number, reg: number, value: number) {
+    export function i2cwrite(addr: number, reg: number, value: number) {
         let buf = pins.createBuffer(2)
         buf[0] = reg
         buf[1] = value
         pins.i2cWriteBuffer(addr, buf)
     }
-    function i2cread(addr: number, reg: number) {
+    export function i2cread(addr: number, reg: number) {
         pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
         let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
         return val;
     }
-    function initModule(): void {
+    export function initModule(): void {
         i2cwrite(ADDR, 0x81, 0xFC)
         i2cwrite(ADDR, 0x8F, 0x03)
         i2cwrite(ADDR, 0x80, 0x00)
