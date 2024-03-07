@@ -1,135 +1,28 @@
 //% block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf005"
 namespace ColorSensor {
     const ADDR = 0x39;
-    const ENABLE_PON = 0x80; // Power ON
-    const ENABLE_PEN = 0x04; // Proximity Enable
-    const ENABLE_PIEN = 0x20; // Proximity Interrupt Enable
-    const ENABLE_GEN = 0x40; // Gesture Enable
-    const ENABLE_AEN = 0x02; // ALS Enable
-    const ENABLE_AIEN = 0x10; // ALS Interrupt Enable
-    const ENABLE_WEN = 0x08; // Wait Enable
-    const CONTROL_PGAIN = 0x8F; // Proximity Gain Control
-    const CONTROL_LDRIVE = 0xC0; // LED Drive Strength
-    const CONTROL_AGAIN = 0x03; // ALS Gain Control
-    const CONFIG1_LOWPOW = 0x8D; // Low Power Clock Mode
-    const CONFIG1_WLONG = 0x02; // Wait Long Enable
-    const CONFIG2_CPSIEN = 0x90; // Clear diode Saturation Interrupt Enable
-    const CONFIG2_PSIEN = 0x90; // Proximity Saturation Interrupt Enable
-    const CONFIG2_LEDBOOST = 0x90; // Proximity/Gesture LED Boost
-    const CONFIG3_PCMP = 0x9F; // Proximity Gain Compensation Enable
-    const CONFIG3_PMSK_U = 0x9F; // Proximity Mask UP Enable
-    const CONFIG3_PMSK_D = 0x9F; // Proximity Mask DOWN Enable
-    const CONFIG3_PMSK_L = 0x9F; // Proximity Mask LEFT Enable
-    const CONFIG3_PMSK_R = 0x9F; // Proximity Mask RIGHT Enable
-    const STATUS_PGSAT = 0x93; // Proximity Saturation
-    const STATUS_PINT = 0x93; // Proximity Interrupt
-    const STATUS_PVALID = 0x93; // Proximity Valid
-    const STATUS_CPSAT = 0x93; // Clear Diode Saturation
-    const STATUS_AINT = 0x93; // ALS Interrupt
-    const STATUS_AVALID = 0x93; // ALS Valid
-    const STATUS_GSAT = 0x93; // Gesture Saturation
-    const PDATA = 0x9C; // Proximity Data
-    const PERS_APERS = 0x8C; // ALS Interrupt Persistence
-    const PERS_PPERS = 0x8C; // Proximity Interrupt Persistence
-    const POFFSET_UR = 0x9D; // Proximity Offset UP/RIGHT
-    const POFFSET_DL = 0x9E; // Proximity Offset DOWN/LEFT
-    const PILT = 0x89; // Proximity low threshold
-    const PIHT = 0x8B; // Proximity high threshold
-    const PPULSE_PPLEN = 0x8E; // Proximity Pulse Length
-    const PPULSE_PPULSE = 0x8E; // Proximity Pulse Count
-    const ATIME = 0x81; // ALS ADC Integration Time
-    const WTIME = 0x83; // Wait Time
-    const AILTL = 0x84; // ALS low threshold, lower byte
-    const AILTH = 0x85; // ALS low threshold, upper byte
-    const AIHTL = 0x86; // ALS high threshold, lower byte
-    const AIHTH = 0x87; // ALS high threshold, upper byte
-    const CDATAL = 0x94; // Clear Data, Low byte
-    const CDATAH = 0x95; // Clear Data, High byte
-    const RDATAL = 0x96; // Red Data, Low byte
-    const RDATAH = 0x97; // Red Data, High byte
-    const GDATAL = 0x98; // Green Data, Low byte
-    const GDATAH = 0x99; // Green Data, High byte
-    const BDATAL = 0x9A; // Blue Data, Low byte
-    const BDATAH = 0x9B; // Blue Data, High byte
-    const CICLEAR = 0xE5; // Clear Channel Interrupt Clear
-    const PICLEAR = 0xE5; // Proximity Interrupt Clear
-    const AICLEAR = 0xE7; // All Non-Gesture Interrupt Clear
-    const GPENTH = 0xA0; // Gesture Proximity Entry Threshold
-    const GEXTH = 0xA1; // Gesture Exit Threshold
-    const GPULSE_GPULSE = 0xA6; // Gesture Pulse Count
-    const GPULSE_GPLEN = 0xA6; // Gesture Pulse Length
-    const GFLVL = 0xAE; // Gesture FIFO Level
-    const GSTATUS_GFOV = 0xAF; // Gesture FIFO Overflow
-    const GSTATUS_GVALID = 0xAF; // Gesture Valid
-    const GCONFIG1_GFIFOTH = 0xA2; // Gesture FIFO Threshold
-    const GCONFIG1_GEXMSK = 0xA2; // Gesture Exit Mask
-    const GCONFIG1_GEXPERS = 0xA2; // Gesture Exit Persistence
-    const GCONFIG2_GGAIN = 0xA3; // Gesture Gain Control
-    const GCONFIG2_GLDRIVE = 0xA3; // Gesture LED Drive Strength
-    const GCONFIG2_GWTIME = 0xA3; // Gesture Wait Time
-    const GCONFIG3_GDIMS = 0xAA; // Gesture Dimension Select
-    const GCONFIG4_GFIFO_CLR = 0xAB; // Gesture FIFO Clear
-    const GCONFIG4_GIEN = 0xAB; // Gesture Interrupt Enable
-    const GCONFIG4_GMODE = 0xAB; // Gesture Mode
-    const GFIFO_U = 0xFC; // Gesture FIFO Data, UP
-    const GFIFO_D = 0xFD; // Gesture FIFO Data, DOWN
-    const GFIFO_L = 0xFE; // Gesture FIFO Data, LEFT
-    const GFIFO_R = 0xFF; // Gesture FIFO Data, RIGHT
-    const GOFFSET_U = 0xA4; // Gesture Offset, UP
-    const GOFFSET_D = 0xA5; // Gesture Offset, DOWN
-    const GOFFSET_L = 0xA7; // Gesture Offset, LEFT
-    const GOFFSET_R = 0xA9; // Gesture Offset, RIGHT
+    let first_init = false
+    function i2cwrite(addr: number, reg: number, value: number) {
+        let buf = pins.createBuffer(2)
+        buf[0] = reg
+        buf[1] = value
+        pins.i2cWriteBuffer(addr, buf)
+    }
+    function i2cread(addr: number, reg: number) {
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
+        let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
+        return val;
+    }
+    function initModule(): void {
+        i2cwrite(ADDR, 0x81, 0xFC)
+        i2cwrite(ADDR, 0x8F, 0x03)
+        i2cwrite(ADDR, 0x80, 0x00)
+        i2cwrite(ADDR, 0xAB, 0x00)
+        i2cwrite(ADDR, 0xE7, 0x00)
+        i2cwrite(ADDR, 0x80, 0x01)
+        first_init = true
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf005"
 namespace ColorSensorOld {
