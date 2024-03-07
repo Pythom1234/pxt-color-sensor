@@ -2,6 +2,7 @@
 namespace ColorSensor {
     const ADDR = 0x39;
     let first_init = false
+    let tmp
     export function i2cwrite(addr: number, reg: number, value: number) {
         let buf = pins.createBuffer(2)
         buf[0] = reg
@@ -21,6 +22,13 @@ namespace ColorSensor {
         i2cwrite(ADDR, 0xE7, 0b0)
         i2cwrite(ADDR, 0x80, 0b1000111)
         first_init = true
+    }
+    export function calibration(): void {
+        tmp = i2cread(ADDR, 0x93) & 0x1;
+        while (!tmp) {
+            basic.pause(5);
+            tmp = i2cread(ADDR, 0x93) & 0x1;
+        }
     }
 }
 
