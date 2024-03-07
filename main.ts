@@ -173,7 +173,7 @@ namespace ColorSensor {
                 break
         }
     }
-    //% block="Color sensor %rgb"
+    //% block="Color sensor %rgb (0~255)"
     export function readColorRGB(rgb: RGB): number {
         if (color_first_init == false) {
             initModule()
