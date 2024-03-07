@@ -120,12 +120,12 @@ namespace ColorSensorOld {
         if (color_first_init == false) {
             initModule()
             colorMode()
-        }/*
+        }
         let tmp = i2cread_color(APDS9960_ADDR, APDS9960_STATUS) & 0x1;
         while (!tmp) {
             basic.pause(5);
             tmp = i2cread_color(APDS9960_ADDR, APDS9960_STATUS) & 0x1;
-        }*/
+        }
         let c = i2cread_color(APDS9960_ADDR, APDS9960_CDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_CDATAH) * 256;
         let r = i2cread_color(APDS9960_ADDR, APDS9960_RDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_RDATAH) * 256;
         let g = i2cread_color(APDS9960_ADDR, APDS9960_GDATAL) + i2cread_color(APDS9960_ADDR, APDS9960_GDATAH) * 256;
