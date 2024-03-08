@@ -40,6 +40,7 @@ namespace ColorSensor {
         tmp = i2cread(ADDR, 0x93) & 0x10;
         while (!tmp) {
             console.log(tmp)
+            console.log(i2cread(ADDR, 0x93))
             basic.pause(5);
             tmp = i2cread(ADDR, 0x93) & 0x10;
         }
