@@ -42,6 +42,15 @@ namespace ColorSensor {
         calibration()
         return i2cread(ADDR, 0x9C)
     }
+    //% block="Color sensor HUE(0~360)"
+    export function readColor(): number {
+        tmp = i2cread(ADDR, 0x93) & 0x1;
+        while (!tmp) {
+            basic.pause(5);
+            tmp = i2cread(ADDR, 0x93) & 0x1;
+        }
+        return randint(0, 10)
+    }
 }
 
 // block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf005"
