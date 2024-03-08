@@ -28,18 +28,26 @@ namespace ColorSensor {
         first_init = true
     }
     //% block
-    export function calibration(): void {
+    export function calibrationA(): void {
         tmp = i2cread(ADDR, 0x93) & 0x1;
         while (!tmp) {
             basic.pause(5);
             tmp = i2cread(ADDR, 0x93) & 0x1;
         }
     }
+    //% block
+    export function calibrationP(): void {
+        tmp = i2cread(ADDR, 0x93) & 0x10;
+        while (!tmp) {
+            basic.pause(5);
+            tmp = i2cread(ADDR, 0x93) & 0x10;
+        }
+    }
     //% block="get distance (0~255)"
     //% block.loc.cs="vzdálenost (0~255)"
     //% weight=100
     export function distance(): number {
-        calibration()
+        calibrationP()
         return i2cread(ADDR, 0x9C)
     }
 }
