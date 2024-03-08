@@ -21,10 +21,10 @@ namespace ColorSensor {
         i2cwrite(ADDR, 0x80, 0b0)
         i2cwrite(ADDR, 0x81, 0b11111100)
         i2cwrite(ADDR, 0x8F, 0b11001111)
-        i2cwrite(ADDR, 0xAB, 0b0)
+        i2cwrite(ADDR, 0xAB, 0b1)
         i2cwrite(ADDR, 0xE7, 0b0)
         //i2cwrite(ADDR, 0x80, 0b1000111)
-        i2cwrite(ADDR, 0x80, 0b0000111)
+        i2cwrite(ADDR, 0x80, 0b111)
         first_init = true
     }
     //% block
@@ -41,15 +41,6 @@ namespace ColorSensor {
     export function distance(): number {
         calibration()
         return i2cread(ADDR, 0x9C)
-    }
-    //% block="Color sensor HUE(0~360)"
-    export function readColor(): number {
-        tmp = i2cread(ADDR, 0x93) & 0x1;
-        while (!tmp) {
-            basic.pause(5);
-            tmp = i2cread(ADDR, 0x93) & 0x1;
-        }
-        return randint(0, 10)
     }
 }
 
