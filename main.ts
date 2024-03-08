@@ -3,33 +3,32 @@ namespace ColorSensor {
     const ADDR = 0x39;
     let first_init = false
     let tmp
-    //% block
     export function i2cwrite(addr: number, reg: number, value: number) {
         let buf = pins.createBuffer(2)
         buf[0] = reg
         buf[1] = value
         pins.i2cWriteBuffer(addr, buf)
     }
-    //% block
     export function i2cread(addr: number, reg: number) {
         pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
         let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
         return val;
     }
-    //% block
+    //% block="initalize"
+    //% block.loc.cs="inicializovat"
+    //% weight=100
     export function init(): void {
         i2cwrite(ADDR, 0x80, 0b0)
         i2cwrite(ADDR, 0x81, 0b11111100)
         i2cwrite(ADDR, 0x8F, 0b11001111)
         i2cwrite(ADDR, 0xAB, 0b0)
         i2cwrite(ADDR, 0xE7, 0b0)
-        //i2cwrite(ADDR, 0x80, 0b1000111)
         i2cwrite(ADDR, 0x80, 0b1000001)
         first_init = true
     }
     //% block="get distance (0~255)"
     //% block.loc.cs="vzdálenost (0~255)"
-    //% weight=100
+    //% weight=99
     export function distance(): number {
         i2cwrite(ADDR, 0x80, 0b101)
         tmp = i2cread(ADDR, 0x93) & 0b10;
