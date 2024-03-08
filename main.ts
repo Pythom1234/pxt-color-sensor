@@ -17,9 +17,10 @@ namespace ColorSensor {
         return val;
     }
     //% block
-    export function initModule(): void {
+    export function init(): void {
         i2cwrite(ADDR, 0x81, 0b11111100)
-        i2cwrite(ADDR, 0x8F, 0b11001111)
+        //i2cwrite(ADDR, 0x8F, 0b11001111)
+        i2cwrite(ADDR, 0x8F, 0b11)
         i2cwrite(ADDR, 0x80, 0b0)
         i2cwrite(ADDR, 0xAB, 0b0)
         i2cwrite(ADDR, 0xE7, 0b0)
@@ -30,8 +31,6 @@ namespace ColorSensor {
     export function calibration(): void {
         tmp = i2cread(ADDR, 0x93) & 0x1;
         while (!tmp) {
-            console.log(tmp)
-            console.log(i2cread(ADDR, 0x93))
             basic.pause(5);
             tmp = i2cread(ADDR, 0x93) & 0x1;
         }
