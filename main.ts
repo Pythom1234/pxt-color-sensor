@@ -19,8 +19,7 @@ namespace ColorSensor {
     //% block
     export function init(): void {
         i2cwrite(ADDR, 0x81, 0b11111100)
-        //i2cwrite(ADDR, 0x8F, 0b11001111)
-        i2cwrite(ADDR, 0x8F, 0b11)
+        i2cwrite(ADDR, 0x8F, 0b11000000)
         i2cwrite(ADDR, 0x80, 0b0)
         i2cwrite(ADDR, 0xAB, 0b0)
         i2cwrite(ADDR, 0xE7, 0b0)
