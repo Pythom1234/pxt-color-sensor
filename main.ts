@@ -30,6 +30,7 @@ namespace ColorSensor {
     export function calibration(): void {
         tmp = i2cread(ADDR, 0x93) & 0x1;
         while (!tmp) {
+            console.log(tmp)
             basic.pause(5);
             tmp = i2cread(ADDR, 0x93) & 0x1;
         }
