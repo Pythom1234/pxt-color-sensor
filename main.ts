@@ -35,21 +35,15 @@ namespace ColorSensor {
             tmp = i2cread(ADDR, 0x93) & 0b1;
         }
     }
-    //% block
-    export function calibrationP(): void {
-        tmp = i2cread(ADDR, 0x93) & 0b10;
-        while (!tmp) {
-            console.log(tmp)
-            console.log(i2cread(ADDR, 0x93))
-            basic.pause(5);
-            tmp = i2cread(ADDR, 0x93) & 0b10;
-        }
-    }
     //% block="get distance (0~255)"
     //% block.loc.cs="vzdálenost (0~255)"
     //% weight=100
     export function distance(): number {
-        calibrationP()
+        tmp = i2cread(ADDR, 0x93) & 0b10;
+        while (!tmp) {
+            basic.pause(5);
+            tmp = i2cread(ADDR, 0x93) & 0b10;
+        }
         return i2cread(ADDR, 0x9C)
     }
 }
