@@ -25,7 +25,7 @@ namespace ColorSensor {
         i2cwrite(ADDR, 0xAB, 0b0)
         i2cwrite(ADDR, 0xE7, 0b0)
         //i2cwrite(ADDR, 0x80, 0b1000111)
-        i2cwrite(ADDR, 0x80, 0b11)
+        i2cwrite(ADDR, 0x80, 0b111)
         first_init = true
     }
     //% block
