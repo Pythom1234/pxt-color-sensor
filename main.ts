@@ -24,7 +24,7 @@ namespace ColorSensor {
         i2cwrite(ADDR, 0xAB, 0b0)
         i2cwrite(ADDR, 0xE7, 0b0)
         //i2cwrite(ADDR, 0x80, 0b1000111)
-        i2cwrite(ADDR, 0x80, 0b1000111)
+        i2cwrite(ADDR, 0x80, 0b1)
         first_init = true
     }
     //% block
@@ -39,12 +39,14 @@ namespace ColorSensor {
     //% block.loc.cs="vzdálenost (0~255)"
     //% weight=100
     export function distance(): number {
+        i2cwrite(ADDR, 0x80, 0b101)
         tmp = i2cread(ADDR, 0x93) & 0b10;
         while (!tmp) {
             basic.pause(5);
             tmp = i2cread(ADDR, 0x93) & 0b10;
         }
         return i2cread(ADDR, 0x9C)
+        i2cwrite(ADDR, 0x80, 0b1)
     }
 }
 
