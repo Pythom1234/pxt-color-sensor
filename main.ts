@@ -34,7 +34,7 @@ namespace ColorSensor {
     //% block.loc.cs="vzdálenost (0~255)"
     //% weight=100
     export function distance(): number {
-        calibration()
+        //calibration()
         return i2cread(ADDR, 0x9C)
     }
 }
