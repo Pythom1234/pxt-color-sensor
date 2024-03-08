@@ -26,7 +26,7 @@ namespace ColorSensor {
         i2cwrite(ADDR, 0x80, 0b1000001)
         first_init = true
     }
-    //% block="get distance (0~255)"
+    //% block="distance (0~255)"
     //% block.loc.cs="vzdálenost (0~255)"
     //% weight=99
     export function distance(): number {
