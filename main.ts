@@ -147,7 +147,7 @@ namespace ColorSensorOld {
     //% block="Color sensor HUE(0~360)"
     export function readColor(): number {
         if (color_first_init == false) {
-            //initModule()
+            initModule()
             colorMode()
         }
         let tmp = i2cread_color(APDS9960_ADDR, APDS9960_STATUS) & 0x1;
