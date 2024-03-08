@@ -24,16 +24,8 @@ namespace ColorSensor {
         i2cwrite(ADDR, 0xAB, 0b0)
         i2cwrite(ADDR, 0xE7, 0b0)
         //i2cwrite(ADDR, 0x80, 0b1000111)
-        i2cwrite(ADDR, 0x80, 0b1)
+        i2cwrite(ADDR, 0x80, 0b1000001)
         first_init = true
-    }
-    //% block
-    export function calibrationA(): void {
-        tmp = i2cread(ADDR, 0x93) & 0b1;
-        while (!tmp) {
-            basic.pause(5);
-            tmp = i2cread(ADDR, 0x93) & 0b1;
-        }
     }
     //% block="get distance (0~255)"
     //% block.loc.cs="vzdálenost (0~255)"
