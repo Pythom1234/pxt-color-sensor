@@ -4,9 +4,7 @@ namespace ColorSensor {
         //% block="distance" block.loc.cs="vzdálenost"
         Distance,
         //% block="color" block.loc.cs="barvy"
-        Color,
-        //% block="gesture" block.loc.cs="gesta"
-        Gesture
+        Color
     }
     const ADDR = 0x39
     let tmp
@@ -42,13 +40,6 @@ namespace ColorSensor {
                 i2cwrite(ADDR, 0xAB, 0b0)
                 i2cwrite(ADDR, 0xE7, 0b0)
                 i2cwrite(ADDR, 0x80, 0b11)
-            case Mode.Gesture:
-                i2cwrite(ADDR, 0x80, 0b0)
-                i2cwrite(ADDR, 0x81, 0b11111100)
-                i2cwrite(ADDR, 0x8F, 0b11001111)
-                i2cwrite(ADDR, 0xAB, 0b0)
-                i2cwrite(ADDR, 0xE7, 0b0)
-                i2cwrite(ADDR, 0x80, 0b1000101)
         }
     }
     //% block="distance (0~255)"
