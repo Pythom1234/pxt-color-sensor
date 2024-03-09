@@ -1,7 +1,6 @@
 //% block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf005"
 namespace ColorSensor {
-    const ADDR = 0x39;
-    let first_init = false
+    const ADDR = 0x39
     let tmp
     export function i2cwrite(addr: number, reg: number, value: number) {
         let buf = pins.createBuffer(2)
@@ -10,9 +9,9 @@ namespace ColorSensor {
         pins.i2cWriteBuffer(addr, buf)
     }
     export function i2cread(addr: number, reg: number) {
-        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
-        let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
-        return val;
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE)
+        let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE)
+        return val
     }
     //% block="initalize"
     //% block.loc.cs="inicializovat"
@@ -23,14 +22,12 @@ namespace ColorSensor {
         i2cwrite(ADDR, 0x8F, 0b11001111)
         i2cwrite(ADDR, 0xAB, 0b0)
         i2cwrite(ADDR, 0xE7, 0b0)
-        i2cwrite(ADDR, 0x80, 0b1000001)
-        first_init = true
+        i2cwrite(ADDR, 0x80, 0b1110001)
     }
     //% block="distance (0~255)"
     //% block.loc.cs="vzdálenost (0~255)"
     //% weight=99
     export function distance(): number {
-        i2cwrite(ADDR,0x80,0b0)
         i2cwrite(ADDR, 0x80, 0b101)
         tmp = i2cread(ADDR, 0x93) & 0b10;
         while (!tmp) {
@@ -38,8 +35,7 @@ namespace ColorSensor {
             tmp = i2cread(ADDR, 0x93) & 0b10;
         }
         return i2cread(ADDR, 0x9C)
-        i2cwrite(ADDR, 0x80, 0b0)
-        i2cwrite(ADDR, 0x80, 0b1000001)
+        i2cwrite(ADDR, 0x80, 0b1110001)
     }
 }
 
