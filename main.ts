@@ -42,7 +42,7 @@ namespace ColorSensor {
                 i2cwrite(ADDR, 0x8F, 0b11001111)
                 i2cwrite(ADDR, 0xAB, 0b0)
                 i2cwrite(ADDR, 0xE7, 0b0)
-                i2cwrite(ADDR, 0x80, 0b101)
+                i2cwrite(ADDR, 0x80, 0b111)
             case Mode.Color:
                 i2cwrite(ADDR, 0x80, 0b0)
                 i2cwrite(ADDR, 0x81, 0b11111100)
@@ -71,7 +71,7 @@ namespace ColorSensor {
     //% block.loc.cs="barva $rgbc kanál (0~255)"
     //% weight=99
     export function color(rgbc: RGBC): number {
-        if (currentMode == Mode.Color) {
+        if (currentMode == Mode.Distance) {
             tmp = i2cread(ADDR, 0x93) & 0b1;
             while (!tmp) {
                 basic.pause(5);
