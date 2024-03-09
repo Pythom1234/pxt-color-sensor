@@ -6,6 +6,16 @@ namespace ColorSensor {
         //% block="color" block.loc.cs="barvy"
         Color
     }
+    export enum RGBC {
+        //% block="red" block.loc.cs="červený"
+        R,
+        //% block="green" block.loc.cs="zelený"
+        G,
+        //% block="blue" block.loc.cs="modrý"
+        B,
+        //% block="clear" block.loc.cs="čirá"
+        C
+    }
     const ADDR = 0x39
     let tmp
     let currentMode: Mode
@@ -55,6 +65,32 @@ namespace ColorSensor {
             return i2cread(ADDR, 0x9C)
         } else {
             throw "mode is not `distance`"
+        }
+    }
+    //% block="color $rgbc channel (0~255)"
+    //% block.loc.cs="barva $rgbc kanál (0~255)"
+    //% weight=99
+    export function color(rgbc: RGBC): number {
+        if (currentMode == Mode.Color) {
+            tmp = i2cread(ADDR, 0x93) & 0b1;
+            while (!tmp) {
+                basic.pause(5);
+                tmp = i2cread(ADDR, 0x93) & 0b1;
+            }
+            switch (rgbc) {
+                case RGBC.R:
+                    return i2cread(ADDR, 0x96) + i2cread(ADDR, 0x97) * 256
+                case RGBC.G:
+                    return i2cread(ADDR, 0x98) + i2cread(ADDR, 0x99) * 256
+                case RGBC.B:
+                    return i2cread(ADDR, 0x9A) + i2cread(ADDR, 0x9B) * 256
+                case RGBC.C:
+                    return i2cread(ADDR, 0x94) + i2cread(ADDR, 0x95) * 256
+                default:
+                    return 0
+            }
+        } else {
+            throw "mode is not `color`"
         }
     }
 }
