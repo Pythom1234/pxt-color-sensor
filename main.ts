@@ -13,7 +13,7 @@ namespace ColorSensor {
         G,
         //% block="blue" block.loc.cs="modrý"
         B,
-        //% block="clear" block.loc.cs="čirý"
+        //% block="clear" block.loc.cs="ALS"
         C
     }
     const ADDR = 0x39
