@@ -28,11 +28,6 @@ namespace ColorSensor {
         Black,
         Pink,
     }
-    export interface RGBValues {
-        red: number;
-        green: number;
-        blue: number;
-    }
     const ADDR = 0x39
     let tmp
     let currentMode: Mode
@@ -47,29 +42,7 @@ namespace ColorSensor {
         let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE)
         return val
     }
-    function rgbToHue(r: number, g: number, b: number): number {
-        let max = Math.max(r, Math.max(g, b));
-        let min = Math.min(r, Math.min(g, b));
-        let delta = max - min;
-
-        let hue = 0;
-
-        if (delta != 0) {
-            if (max == r) {
-                hue = (g - b) / delta + (g < b ? 6 : 0);
-            } else if (max == g) {
-                hue = (b - r) / delta + 2;
-            } else {
-                hue = (r - g) / delta + 4;
-            }
-            hue *= 60;
-        }
-
-        return hue;
-    }
-    export function determineColor(rgb: RGBValues): Colors {
-        const { red, green, blue } = rgb;
-
+    export function determineColor(red: number, green: number, blue: number): Colors {
         if (red > 200 && green < 50 && blue < 50) {
             return Colors.Red;
         } else if (red < 50 && green > 200 && blue < 50) {
