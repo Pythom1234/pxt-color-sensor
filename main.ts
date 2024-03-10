@@ -16,6 +16,23 @@ namespace ColorSensor {
         //% block="clear" block.loc.cs="ALS"
         C
     }
+    export enum Colors {
+        Red,
+        Green,
+        Blue,
+        Cyan,
+        Magenta,
+        Yellow,
+        Orange,
+        White,
+        Black,
+        Pink,
+    }
+    export interface RGBValues {
+        red: number;
+        green: number;
+        blue: number;
+    }
     const ADDR = 0x39
     let tmp
     let currentMode: Mode
@@ -30,6 +47,55 @@ namespace ColorSensor {
         let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE)
         return val
     }
+    function rgbToHue(r: number, g: number, b: number): number {
+        let max = Math.max(r, Math.max(g, b));
+        let min = Math.min(r, Math.min(g, b));
+        let delta = max - min;
+
+        let hue = 0;
+
+        if (delta != 0) {
+            if (max == r) {
+                hue = (g - b) / delta + (g < b ? 6 : 0);
+            } else if (max == g) {
+                hue = (b - r) / delta + 2;
+            } else {
+                hue = (r - g) / delta + 4;
+            }
+            hue *= 60;
+        }
+
+        return hue;
+    }
+    export function determineColor(rgb: RGBValues): Colors {
+        const { red, green, blue } = rgb;
+
+        if (red > 200 && green < 50 && blue < 50) {
+            return Colors.Red;
+        } else if (red < 50 && green > 200 && blue < 50) {
+            return Colors.Green;
+        } else if (red < 50 && green < 50 && blue > 200) {
+            return Colors.Blue;
+        } else if (red < 50 && green > 200 && blue > 200) {
+            return Colors.Cyan;
+        } else if (red > 200 && green < 50 && blue > 200) {
+            return Colors.Magenta;
+        } else if (red > 200 && green > 200 && blue < 50) {
+            return Colors.Yellow;
+        } else if (red > 200 && green > 100 && blue < 50) {
+            return Colors.Orange;
+        } else if (red > 200 && green > 200 && blue > 200) {
+            return Colors.White;
+        } else if (red < 50 && green < 50 && blue < 50) {
+            return Colors.Black;
+        } else if (red > 200 && green < 150 && blue > 150) {
+            return Colors.Pink;
+        }
+
+        // Default to Black if no match is found
+        return Colors.Black;
+    }
+
     //% block="initalize mode $mode"
     //% block.loc.cs="inicializovat mód $mode"
     //% weight=100
