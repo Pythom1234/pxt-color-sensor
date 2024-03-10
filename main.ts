@@ -65,7 +65,6 @@ namespace ColorSensor {
             return Colors.Pink;
         }
 
-        // Default to Black if no match is found
         return Colors.Black;
     }
 
