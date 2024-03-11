@@ -16,18 +16,6 @@ namespace ColorSensor {
         //% block="clear" block.loc.cs="ALS"
         C
     }
-    export enum Colors {
-        Red,
-        Green,
-        Blue,
-        Cyan,
-        Magenta,
-        Yellow,
-        Orange,
-        White,
-        Black,
-        Pink,
-    }
     const ADDR = 0x39
     let tmp
     let currentMode: Mode
@@ -42,32 +30,6 @@ namespace ColorSensor {
         let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE)
         return val
     }
-    export function determineColor(red: number, green: number, blue: number): Colors {
-        if (red > 200 && green < 50 && blue < 50) {
-            return Colors.Red;
-        } else if (red < 50 && green > 200 && blue < 50) {
-            return Colors.Green;
-        } else if (red < 50 && green < 50 && blue > 200) {
-            return Colors.Blue;
-        } else if (red < 50 && green > 200 && blue > 200) {
-            return Colors.Cyan;
-        } else if (red > 200 && green < 50 && blue > 200) {
-            return Colors.Magenta;
-        } else if (red > 200 && green > 200 && blue < 50) {
-            return Colors.Yellow;
-        } else if (red > 200 && green > 100 && blue < 50) {
-            return Colors.Orange;
-        } else if (red > 200 && green > 200 && blue > 200) {
-            return Colors.White;
-        } else if (red < 50 && green < 50 && blue < 50) {
-            return Colors.Black;
-        } else if (red > 200 && green < 150 && blue > 150) {
-            return Colors.Pink;
-        }
-
-        return Colors.Black;
-    }
-
     //% block="initalize mode $mode"
     //% block.loc.cs="inicializovat mód $mode"
     //% weight=100
