@@ -18,7 +18,7 @@ namespace ColorSensor {
         //% block="clear" block.loc.cs="ALS"
         C
     }
-    enum Gestures {
+    export enum Gestures {
         //% block="right"
         //% block.loc.cs="doprava"
         Right = 1,
