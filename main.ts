@@ -87,7 +87,7 @@ namespace ColorSensor {
     }
     //% block="color $rgbc channel (0~4096)"
     //% block.loc.cs="barva $rgbc kanál (0~4096)"
-    //% weight=99
+    //% weight=98
     export function color(rgbc: RGBC): number {
         if (currentMode == Mode.Color) {
             tmp = i2cread(ADDR, 0x93) & 0b1;
@@ -113,6 +113,7 @@ namespace ColorSensor {
     }
     //% block="on gesture %gesture"
     //% block.loc.cs="při gestu %gesture"
+    //% weight=97
     export function onGesture(gesture: Gestures, body: () => void): void {
         if (currentMode == Mode.Gesture) {
             if (gesture == Gestures.Right) control.onEvent(APDSGestures.gestureRightID, gesture, body);
