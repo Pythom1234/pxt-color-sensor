@@ -115,14 +115,14 @@ namespace ColorSensor {
     //% block.loc.cs="při gestu %gesture"
     //% weight=97
     export function onGesture(gesture: Gestures, body: () => void): void {
-        if (currentMode == Mode.Gesture) {
-            if (gesture == Gestures.Right) control.onEvent(APDSGestures.gestureRightID, gesture, body);
-            if (gesture == Gestures.Left) control.onEvent(APDSGestures.gestureLeftID, gesture, body);
-            if (gesture == Gestures.Up) control.onEvent(APDSGestures.gestureUpID, gesture, body);
-            if (gesture == Gestures.Down) control.onEvent(APDSGestures.gestureDownID, gesture, body);
+        if (gesture == Gestures.Right) control.onEvent(APDSGestures.gestureRightID, gesture, body);
+        if (gesture == Gestures.Left) control.onEvent(APDSGestures.gestureLeftID, gesture, body);
+        if (gesture == Gestures.Up) control.onEvent(APDSGestures.gestureUpID, gesture, body);
+        if (gesture == Gestures.Down) control.onEvent(APDSGestures.gestureDownID, gesture, body);
 
-            control.inBackground(() => {
-                while (true) {
+        control.inBackground(() => {
+            while (true) {
+                if (currentMode == Mode.Gesture) {
                     const gesture = APDSGestures.read();
 
                     if (gesture != APDSGestures.lastGesture) {
@@ -143,11 +143,11 @@ namespace ColorSensor {
                         }
                     }
                     basic.pause(50);
+                } else {
+                    throw "mode is not `gesture`"
                 }
-            })
-        } else {
-            throw "mode is not `gesture`"
-        }
+            }
+        })
     }
 
     namespace APDSGestures {
