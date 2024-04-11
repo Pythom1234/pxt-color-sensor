@@ -1,4 +1,4 @@
-//% block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1ED  icon="\uf005"
+//% block="Color Sensor" block.loc.cs="Senzor Barev" color=#00B1EE  icon="\uf005"
 namespace ColorSensor {
     export enum Mode {
         //% block="distance" block.loc.cs="vzdálenost"
